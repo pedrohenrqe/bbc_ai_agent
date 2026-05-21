@@ -1,49 +1,41 @@
-import sqlite3
+import json
+import os
 
-DB_NAME = "words.db"
+FILE_NAME = "words.json"
 
 
-def create_database():
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
+def load_words():
+    if not os.path.exists(FILE_NAME):
+        return []
 
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS words (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            word TEXT UNIQUE,
-            translation TEXT,
-            example TEXT
-        )
-    """)
+    with open(FILE_NAME, "r", encoding="utf-8") as file:
+        return json.load(file)
 
-    conn.commit()
-    conn.close()
+
+def save_words(words):
+    with open(FILE_NAME, "w", encoding="utf-8") as file:
+        json.dump(words, file, indent=4, ensure_ascii=False)
 
 
 def word_exists(word):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
+    words = load_words()
 
-    cursor.execute(
-        "SELECT 1 FROM words WHERE LOWER(word) = LOWER(?)",
-        (word,)
+    return any(
+        item["word"].lower() == word.lower()
+        for item in words
     )
-
-    result = cursor.fetchone()
-
-    conn.close()
-
-    return result is not None
 
 
 def save_word(word, translation, example):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
+    words = load_words()
 
-    cursor.execute("""
-        INSERT OR IGNORE INTO words(word, translation, example)
-        VALUES (?, ?, ?)
-    """, (word, translation, example))
+    if word_exists(word):
+        return
 
-    conn.commit()
-    conn.close()
+    words.append({
+        "word": word,
+        "translation": translation,
+        "example": example
+    })
+
+    save_words(words)

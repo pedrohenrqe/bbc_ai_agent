@@ -27,7 +27,7 @@ def get_article_links():
 
         if "/news/articles/" in href:
             if href.startswith("/"):
-                href = f"https://www.bbc.com{href}"
+                href = "https://www.bbc.com" + href
 
             links.add(href)
 
@@ -41,6 +41,12 @@ def extract_article_text(url):
 
     paragraphs = soup.find_all("p")
 
-    text = " ".join([p.get_text(strip=True) for p in paragraphs])
+    text = []
 
-    return text
+    for p in paragraphs:
+        content = p.get_text(strip=True)
+
+        if len(content) > 40:
+            text.append(content)
+
+    return " ".join(text)

@@ -6,14 +6,11 @@ from scraper import (
 from ai_processor import extract_words
 
 from database import (
-    create_database,
     word_exists,
     save_word
 )
 
-
 def main():
-    create_database()
 
     print("\nBuscando artigos da BBC Technology...\n")
 

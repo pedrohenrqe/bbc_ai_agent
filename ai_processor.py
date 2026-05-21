@@ -1,35 +1,43 @@
 import json
+import re
 import ollama
 
 from config import OLLAMA_MODEL
 
 
 PROMPT = """
-You are an English vocabulary extractor.
+Extract exactly 10 intermediate or advanced English words from the text.
 
-Your task:
-- Extract useful intermediate/advanced English words.
-- Ignore very basic words.
-- Avoid proper nouns.
-- Return EXACTLY 10 words.
-- Each word must include:
-  - word
-  - portuguese translation
-  - short example sentence in English
+Rules:
+- Avoid basic words
+- Avoid proper nouns
+- Avoid repeated words
+- Return ONLY valid JSON
+- Do not write explanations
+- Do not use markdown
 
-Return ONLY valid JSON.
-
-Example:
+Format:
 
 [
   {
-    "word": "breakthrough",
-    "translation": "avanço",
-    "example": "The company announced a major breakthrough."
+    "word": "example",
+    "translation": "exemplo",
+    "example": "This is an example sentence."
   }
 ]
 """
 
+
+def extract_json(text):
+    match = re.search(r"\[.*\]", text, re.DOTALL)
+
+    if not match:
+        return []
+
+    try:
+        return json.loads(match.group())
+    except Exception:
+        return []
 
 def extract_words(text):
     response = ollama.chat(
@@ -41,16 +49,14 @@ def extract_words(text):
             },
             {
                 "role": "user",
-                "content": text[:12000]
+                "content": text[:8000]
             }
         ]
     )
 
     content = response["message"]["content"]
 
-    try:
-        return json.loads(content)
-    except Exception:
-        print("Erro ao interpretar JSON:")
-        print(content)
-        return []
+    print("\nRESPOSTA DA IA:\n")
+    print(content)
+
+    return extract_json(content)
