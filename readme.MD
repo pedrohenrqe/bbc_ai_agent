@@ -94,7 +94,7 @@ bbc_ai_agent/
 ├── database.py
 ├── config.py
 ├── requirements.txt
-└── words.db
+└── words.json
 ```
 
 ---
