@@ -6,23 +6,22 @@ from config import OLLAMA_MODEL
 
 
 PROMPT = """
-Extract exactly 10 intermediate or advanced English words from the text.
+Extract 10 intermediate English words from the text.
 
-Rules:
-- Avoid basic words
-- Avoid proper nouns
-- Avoid repeated words
-- Return ONLY valid JSON
-- Do not write explanations
-- Do not use markdown
+For each word return:
+- word
+- translation
+- example
 
-Format:
+The example MUST be an English sentence using the word.
+
+Example:
 
 [
   {
-    "word": "example",
-    "translation": "exemplo",
-    "example": "This is an example sentence."
+    "word": "breakthrough",
+    "translation": "avanço",
+    "example": "The company announced a major breakthrough."
   }
 ]
 """
