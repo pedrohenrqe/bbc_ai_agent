@@ -12,7 +12,7 @@ O sistema evita palavras repetidas utilizando SQLite.
 - Extração automática de 10 palavras
 - Tradução para português
 - Frase de exemplo
-- Persistência local com SQLite
+- Persistência local com json
 - IA local com Ollama + Llama 3
 - Sem APIs pagas
 
@@ -23,7 +23,6 @@ O sistema evita palavras repetidas utilizando SQLite.
 - Python
 - Requests
 - BeautifulSoup
-- SQLite
 - Ollama
 - Llama 3
 
@@ -34,7 +33,7 @@ O sistema evita palavras repetidas utilizando SQLite.
 Clone o projeto:
 
 ```bash
-git clone https://github.com/SEU_USUARIO/bbc_ai_agent.git
+git clone https://github.com/pedrohenrqe/bbc_ai_agent.git
 
 cd bbc_ai_agent
 ```
@@ -98,12 +97,3 @@ bbc_ai_agent/
 ```
 
 ---
-
-## Melhorias Futuras
-
-- Interface desktop
-- Flashcards
-- Integração com Anki
-- Exportação CSV
-- Automação diária
-- Quiz de vocabulário
